@@ -13,23 +13,36 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+
       theme: ThemeData(
         primaryColor: Colors.green,
         appBarTheme: const AppBarTheme(
           color: Colors.red,
         ),
+
+        iconTheme: IconThemeData(
+          color: Colors.red,
+        ),
+
         inputDecorationTheme: const InputDecorationTheme(
           labelStyle: TextStyle(
             color: Colors.red,
-
           ),
+
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(
                 style: BorderStyle.solid,
-                color: Colors.red
+                color: Colors.red,
               )
             )
+        ),
+
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            primary: Colors.red
+          )
         )
+
      ),
 
       home: const RegistrationPage(),

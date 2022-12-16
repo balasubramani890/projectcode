@@ -6,61 +6,72 @@ class RegistrationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      
       appBar: AppBar(
         title: const Text("Registration"),
       ),
-    body: Card(
-      margin: EdgeInsets.all(15.0),
-      child: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Padding(
-                padding: EdgeInsets.all(10.0)
-            ),
-            TextField(
-              decoration: InputDecoration(
-                labelText: 'User Name',
-                hintText: 'Enter User Name',
-                prefixIcon: Icon(Icons.person),
-              ),
-            ),
+    body:  SingleChildScrollView(
 
-            Padding(
-                padding: EdgeInsets.all(10.0)
-            ),
-            TextField(
-              decoration: InputDecoration(
+      child: Center(
+
+        child: Card(
+          margin: const EdgeInsets.all(25.0),
+          elevation: 0,
+
+          child: Column(
+            children: <Widget>[
+              const Padding(
+                  padding: EdgeInsets.all(10.0)
+              ),
+              const TextField(
+                decoration: InputDecoration(
+                  labelText: 'User Name',
+                  hintText: 'Enter User Name',
+                  prefixIcon: Icon(Icons.person, color: Colors.red,),
+                ),
+              ),
+
+              const Padding(
+                  padding: EdgeInsets.all(10.0)
+              ),
+              const TextField(
+                decoration: InputDecoration(
                   labelText: 'Mobile Number',
                   hintText: 'Enter Mobile Number',
-                  prefixIcon: Icon(Icons.phone),
+                  prefixIcon: Icon(Icons.phone, color: Colors.red,),
+                ),
               ),
-            ),
 
-            Padding(
-                padding: EdgeInsets.all(10.0)
-            ),
-            TextField(
-              decoration: InputDecoration(
+              const Padding(
+                  padding: EdgeInsets.all(10.0)
+              ),
+              const TextField(
+                decoration: InputDecoration(
                   labelText: 'Password',
                   hintText: 'Enter Password',
-                  prefixIcon: Icon(Icons.password),
+                  prefixIcon: Icon(Icons.password, color: Colors.red,),
+                ),
               ),
-            ),
 
-            ElevatedButton(
+              const Padding(
+                  padding: EdgeInsets.all(15.0)
+              ),
+              ElevatedButton(
                 child: Text('SUBMIT'),
-                onPressed: (){},
-                )
-          ],
+
+                onPressed: (){
+                  print("SUBMIT");
+                },
+              )
+
+            ],
+          ),
 
         ),
-
-
       ),
-    ),
+
+    )
     );
+
   }
 }
