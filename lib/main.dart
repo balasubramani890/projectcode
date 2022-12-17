@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:projectcode/RegistrationPage.dart';
+import 'package:projectcode/loginPage.dart';
+import 'package:projectcode/registrationPage.dart';
 
 void main()
 {
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
           color: Colors.red,
         ),
 
-        iconTheme: IconThemeData(
+        iconTheme: const IconThemeData(
           color: Colors.red,
         ),
 
@@ -39,13 +40,14 @@ class MyApp extends StatelessWidget {
 
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            primary: Colors.red
+            primary: Colors.red,
           )
         )
 
      ),
 
-      home: const RegistrationPage(),
+      home: RegistrationPage(),
     );
   }
+
 }
