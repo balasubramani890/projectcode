@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:projectcode/loginPage.dart';
-import 'package:projectcode/registrationPage.dart';
 
 void main()
 {
@@ -46,7 +45,7 @@ class MyApp extends StatelessWidget {
 
      ),
 
-      home: RegistrationPage(),
+      home: LoginPage(),
     );
   }
 
