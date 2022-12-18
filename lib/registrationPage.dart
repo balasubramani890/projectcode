@@ -35,10 +35,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
   final tMobileNo = TextEditingController();
   final tPassword = TextEditingController();
 
-  bool _valName = false;
-  bool _valMobileNo = false;
-  bool _valPassword = false;
-
   void dispose()
   {
     tName.dispose();
@@ -53,17 +49,55 @@ class _RegistrationPageState extends State<RegistrationPage> {
     tPassword.clear();
   }
 
-  String validateMobile(String value) {
-    String pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
-    RegExp regExp = RegExp(pattern);
-    if (value.isEmpty) {
-      return 'Please enter mobile number';
-    }
-    if (!regExp.hasMatch(value)) {
-      return 'Please enter valid mobile number';
-    }
-    return "";
+  Future showOkMessage(BuildContext context, String message) async
+  {
+    return showDialog(
+        context: context,
+
+        builder: (context)=> AlertDialog(
+          title: Text(message),
+
+        actions: <Widget>[
+          ElevatedButton(
+            child: const Text("OK"),
+            onPressed: (){
+              Navigator.pop(context);
+              },
+          )
+
+        ],
+        ),
+        );
   }
+
+  Future showYnMessage(BuildContext context, String message) async
+  {
+    return showDialog(
+      context: context,
+
+      builder: (context)=> AlertDialog(
+        title: Text(message),
+
+        actions: <Widget>[
+          ElevatedButton(
+            child: const Text("Ok"),
+            onPressed: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>const LoginPage()));
+            },
+          ),
+
+          ElevatedButton(
+            child: const Text("Cancel"),
+            onPressed: (){
+              Navigator.pop(context);
+            },
+          )
+
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,21 +121,28 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     padding: EdgeInsets.all(10.0)
                 ),
                 TextFormField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'User Name',
                     hintText: 'Enter User Name',
-                    prefixIcon: const Icon(Icons.person, color: Colors.red,),
-                    errorText: _valName ? 'Please Enter Name' : null,
+                    prefixIcon: Icon(Icons.person, color: Colors.red,),
+                    // errorText: _valName ? 'Please Enter Name' : null,
                   ),
                   // inputFormatters: <TextInputFormatter>[
                   //   FilteringTextInputFormatter.allow(RegExp(r'^[a-z A-Z]+$')),
                   // ],
                   controller: tName,
+                  onChanged: (value){
+                    _formKey.currentState?.validate();
+                  },
                   validator: (value){
                     if(value=="")
                       {
                         return 'Please Enter Name';
                       }
+                    else if(!RegExp(r'^[a-z A-Z]+$').hasMatch(value!) && value.length < 10 || value.length > 10)
+                    {
+                      return 'Please Enter Valid Mobile Number';
+                    }
                     return null;
                   },
 
@@ -112,11 +153,11 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 ),
 
                 TextFormField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Mobile Number',
                     hintText: 'Enter Mobile Number',
-                    prefixIcon: const Icon(Icons.phone, color: Colors.red,),
-                    errorText: _valMobileNo ? 'Please Enter Mobile Number' : null,
+                    prefixIcon: Icon(Icons.phone, color: Colors.red,),
+                    // errorText: _valMobileNo ? 'Please Enter Mobile Number' : null,
                   ),
                   keyboardType: TextInputType.phone,
                   controller: tMobileNo,
@@ -136,16 +177,19 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 const Padding(
                     padding: EdgeInsets.all(10.0)
                 ),
+
                 TextFormField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Password',
                     hintText: 'Enter Password',
-                    prefixIcon: const Icon(Icons.password, color: Colors.red,),
-                    errorText: _valPassword ? 'Please Enter Password' : null,
+                    prefixIcon: Icon(Icons.password, color: Colors.red,),
                   ),
                   controller: tPassword,
+                  onChanged: (value){
+                    _formKey.currentState?.validate();
+                  },
                   validator: (value){
-                    if(value==null || value.isEmpty)
+                    if(value=="")
                     {
                       return 'Please Enter Password';
                     }
@@ -161,26 +205,22 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
                   children: <Widget>[
                     ElevatedButton(
-                      child: Text('SUBMIT'),
+                      child: const Text('SUBMIT'),
 
-                      onPressed: ()  {
-                        setState(() async {
-                          tName.text.isEmpty ? _valName = true : _valName = false;
-                          tMobileNo.text.isEmpty ? _valMobileNo = true : _valMobileNo = false;
-                          tPassword.text.isEmpty ? _valPassword = true : _valPassword = false;
-
-                          if(_valName == false && _valMobileNo == false && _valPassword == false)
+                      onPressed: ()  async{
+                        if(_formKey.currentState!.validate())
                           {
-                            bool resultStatus = await _saveDetails(tName.text, tMobileNo.text, tPassword.text);
-                            if(resultStatus == true)
+                            final resultStatus = await _saveDetails(tName.text, tMobileNo.text, tPassword.text);
+                            if(resultStatus==true)
+                              {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>const LoginPage()));
+                              }
+                            else
                             {
-                              if(!mounted) return;
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage()),);
-                              clearData();
+                              showYnMessage(context, 'Mobile Number already Exists. Press Ok to Login or Cancel to Continue');
                             }
                           }
 
-                        });
                       },
                     ),
 
